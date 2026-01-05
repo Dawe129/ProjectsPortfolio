@@ -31,6 +31,10 @@ def home():
         <p>Config načteno: {config['DEFAULT']['host']}</p>
         <p>DSN vytvořen: {dsn}</p>
         <p><a href="/books">/books</a></p>
+        <p><a href="/authors">/authors</a></p>
+        <p><a href="/students">/students</a></p>
+        <p><a href="/loans">/loans</a></p>
+        <p><a href="/report">/report</a></p>
         """
     except Exception as e:
         return f"Chyba: {str(e)}"
