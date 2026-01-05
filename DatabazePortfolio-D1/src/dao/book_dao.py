@@ -1,4 +1,4 @@
-import cs_Oracle
+import oracledb
 from dao.base_dao import BaseDAO
 
 class BookDAO(BaseDAO):

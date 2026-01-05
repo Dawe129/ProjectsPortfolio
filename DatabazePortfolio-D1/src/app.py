@@ -1,31 +1,36 @@
 from flask import Flask
-import cx_Oracle
+import oracledb
 import configparser
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from routes.api_routes import api_bp
 
 app = Flask(__name__)
+
+# Registrace blueprintu
+app.register_blueprint(api_bp)
 
 @app.route('/')
 def home():
     try:
-        # Test config
         config = configparser.ConfigParser()
-        config.read('config/database.ini')
+        config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'database.ini')
+        config.read(config_path)
         
-        # Test Oracle (bez připojení)
-        dsn = cx_Oracle.makedsn(
+        dsn = oracledb.makedsn(
             config['DEFAULT']['host'],
-            config['DEFAULT']['port'],
+            int(config['DEFAULT']['port']),
             service_name=config['DEFAULT']['service_name']
         )
         
         return f"""
         <h1>🎉 PROJEKT FUNGUJE!</h1>
         <p>Flask: ✅</p>
-        <p>cx_Oracle: ✅</p>
+        <p>oracledb: ✅</p>
         <p>Config načteno: {config['DEFAULT']['host']}</p>
         <p>DSN vytvořen: {dsn}</p>
-        <p><a href="/books">/books (brzy)</a></p>
+        <p><a href="/books">/books</a></p>
         """
     except Exception as e:
         return f"Chyba: {str(e)}"
